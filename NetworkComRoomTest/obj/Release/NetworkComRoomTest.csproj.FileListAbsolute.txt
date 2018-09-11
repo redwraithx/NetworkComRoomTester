@@ -1,0 +1,9 @@
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\bin\Release\NetworkComRoomTest.exe.config
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\bin\Release\NetworkComRoomTest.exe
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\bin\Release\NetworkComRoomTest.pdb
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.Form1.resources
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.Properties.Resources.resources
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.GenerateResource.cache
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.CoreCompileInputs.cache
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.exe
+C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Release\NetworkComRoomTest.pdb
