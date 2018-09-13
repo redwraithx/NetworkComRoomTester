@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Net.NetworkInformation;
 
 
-
 namespace NetworkComRoomTest
 {
     public enum statusResult
@@ -29,19 +28,26 @@ namespace NetworkComRoomTest
         private int currentCell = -1;
 
 
+        // for auto ping time
+        private int currentSetTimerValue = 0;
+        private bool isAutoPingSet = false;
 
-
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        DateTime startTime;
 
         public Form1()
         {
             InitializeComponent();
 
+            // enter key to click scanbutton
+            this.AcceptButton = btnScanAll;
+
             // status text alignment
-            this.dataGridView.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridView.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            this.dataGridView.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft; // ID
+            this.dataGridView.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft; // ROOM #
+            this.dataGridView.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // IP Address
+            this.dataGridView.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // Status
+            this.dataGridView.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // Ping Response in (ms)
 
             // set rows font / style
             this.dataGridView.RowHeadersDefaultCellStyle.Font = new Font("Aria", 8F, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -56,9 +62,10 @@ namespace NetworkComRoomTest
                 column.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
             }
 
+            txtBoxRefreshtime.Text = "60";
 
 
-
+            // hardcoded list as they will not change for the building
             #region AddRoomsToList
 
 
@@ -112,33 +119,95 @@ namespace NetworkComRoomTest
             #endregion // end AddRoomsToList
 
 
-
-
+            
             foreach (ScanData item in dataList)
             {
                 dataGridView.Rows.Add(item.ID, item.RoomNumber, item.IPAddress, item.Status, item.PingDelay);
             }
 
-
-
-            SelectClear();
         }
 
 
 
 
 
+        private async void AutoPingTimer()
+        {
+            while (isAutoPingSet == true || chkBoxAutoPing.Checked == true)
+            {
+                int minsTillRefresh = int.Parse(txtBoxRefreshtime.Text);
+                startTime = DateTime.Now;
+
+                Timer timer = new Timer() { Interval = 1000 };
+                timer.Tick += new EventHandler(T_tick);
+
+
+                TimeSpan timeSpan = new TimeSpan(0, minsTillRefresh, 0); 
+                timer.Start();
+
+
+                while (timeSpan != TimeSpan.Zero)
+                {
+                    if (isAutoPingSet == false || chkBoxAutoPing.Checked == false)
+                    {
+                        return;
+                    }
+
+
+                    timeSpan = timeSpan.Subtract(TimeSpan.FromSeconds(1)); 
+
+
+                    await System.Threading.Tasks.Task.Delay(1000);
+
+                    T_tick(this, EventArgs.Empty);
+
+                    if (chkBoxAutoPing.Checked == true)
+                        txtBoxTimer.Text = string.Format($"Time left: {timeSpan.Hours:00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}");
+                    else
+                        return;                    
+                }
+
+                txtBoxTimer.Text = "Scanning";        
+                
+                ScanAll();
+            }
+
+            txtBoxTimer.Text = "Timer Off";
+        }
+
+        
+        private void T_tick(object sender, EventArgs e)
+        {
+            TimeSpan ts = startTime.Subtract(DateTime.Now);            
+        }
+
+
+
 
         private void btnScanAll_Click(object sender, EventArgs e)
+        {            
+            btnScanAll.Enabled = false;
+
+            ScanAll();
+
+            btnScanAll.Enabled = true;
+        }
+
+
+
+
+
+        private void ScanAll()
         {
+            ResetScanObjects();
+
             try
             {
-                int timeout = 400;
+                int timeout = 4000;
                 Ping ping;
-            
+
                 foreach (ScanData item in dataList)
                 {
-                    // iter through list ping and report
                     ping = new Ping();
 
                     PingReply pingReply = ping.Send(item.IPAddress, timeout);
@@ -149,13 +218,16 @@ namespace NetworkComRoomTest
                     ResumeLayout();
 
                     dataGridView.Refresh();
+
+
+                    ping.Dispose();
                 }
 
                 dataGridView.Refresh();
             }
             catch (PingException ex)
             {
-                MessageBox.Show("Error: " + ex.Message);                
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -167,23 +239,20 @@ namespace NetworkComRoomTest
         {
             if (pingReply.Status == IPStatus.Success)
             {
-                
-
                 currentCell = int.Parse(item.ID);
                 item.PingDelay = Convert.ToString(pingReply.RoundtripTime);
 
                 dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 1];
 
                 DataGridViewCell cell = dataGridView.Rows[currentCell - 1].Cells[4];
-                cell.Value = item.PingDelay;
-                
+                cell.Value = item.PingDelay;                
             }
             else
             {
                 dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 1];
 
                 DataGridViewCell cell = dataGridView.Rows[currentCell - 1].Cells[4];
-                cell.Value = "999";
+                cell.Value = "9999";
             }
 
         }
@@ -192,8 +261,7 @@ namespace NetworkComRoomTest
 
 
         private void SetStatus(ScanData item, PingReply pingReply)
-        {
-            
+        {          
 
             if (pingReply.Status == IPStatus.Success)
             {
@@ -210,7 +278,7 @@ namespace NetworkComRoomTest
 
                 SetPingResponse(item, pingReply);
             }
-            else if (pingReply.Status == IPStatus.TimedOut)
+            else if (pingReply.Status == IPStatus.TimedOut) // offline
             {
                 currentCell = int.Parse(item.ID);
                 
@@ -229,13 +297,11 @@ namespace NetworkComRoomTest
                 currentCell = int.Parse(item.ID);
 
                 DataGridViewCell cell = dataGridView.Rows[currentCell - 1].Cells[3];
-                cell.Style.BackColor = Color.White;
+                cell.Style.BackColor = Color.FromArgb(0, 192, 192);
                                      
-                dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 2];
-                
+                dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 2];                
                                 
                 currentCell = -1;
-
 
                 SetPingResponse(item, pingReply);
             }
@@ -248,10 +314,90 @@ namespace NetworkComRoomTest
 
 
 
+        private void ResetScanObjects()
+        {
+            int currentCell = -1;
+
+            foreach (ScanData item in dataList)
+            {
+                currentCell = int.Parse(item.ID);
+
+                DataGridViewCell cell = dataGridView.Rows[currentCell - 1].Cells[3];
+                cell.Value = statusResult.UnChecked;
+                dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 2];
+
+                cell = dataGridView.Rows[currentCell - 1].Cells[3];
+                cell.Style.BackColor = Color.LightBlue;
+
+                dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 1];
+
+                cell = dataGridView.Rows[currentCell - 1].Cells[4];
+                cell.Value = "-1";
+            }
+
+            SelectClear();
+        }
+
+
+
+
+
         private void SelectClear()
         {
             dataGridView[0, 0].Selected = true;
             dataGridView.ClearSelection();
+        }
+
+
+
+
+
+        private void chkBoxAutoPing_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBoxAutoPing.Checked == true)
+            {
+                isAutoPingSet = true;
+
+                btnScanAll.Enabled = false;
+                txtBoxRefreshtime.Enabled = false;
+
+                AutoPingTimer();
+            }
+            else
+            {
+                txtBoxTimer.Text = "AutoPing OFF";
+
+                btnScanAll.Enabled = true;
+                txtBoxRefreshtime.Enabled = true;
+
+                isAutoPingSet = false;
+            }
+        }
+
+
+
+
+
+        private void txtBoxRefreshtime_TextChanged(object sender, EventArgs e)
+        {
+            if (txtBoxRefreshtime.Text == "")
+            {
+                isAutoPingSet = false;
+
+                return;
+            }
+
+            int parsedValue;
+            if (!int.TryParse(txtBoxRefreshtime.Text, out parsedValue))
+            {
+                MessageBox.Show(this, "Enter a Value number 1 to 720");
+
+                txtBoxRefreshtime.Text = "";
+
+                return;
+            }
+
+            currentSetTimerValue = int.Parse(txtBoxRefreshtime.Text);
         }
     }
 
