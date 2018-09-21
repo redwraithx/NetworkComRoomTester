@@ -54,6 +54,7 @@ namespace NetworkComRoomTest
 
             // set rows default color
             this.dataGridView.RowsDefaultCellStyle.BackColor = Color.LightBlue;
+                                   
 
             // align and set font / style for the column headers
             foreach (DataGridViewColumn column in dataGridView.Columns)
@@ -78,41 +79,43 @@ namespace NetworkComRoomTest
             dataList.Add(scanData);
             scanData = new ScanData("4", "P155", "10.11.0.55", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("5", "120", "10.11.1.20", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("5", "P156", "10.11.0.56", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("6", "138", "10.11.1.38", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("6", "120", "10.11.1.20", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("7", "200", "10.11.2.0", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("7", "138", "10.11.1.38", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("8", "233", "10.11.2.33", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("8", "200", "10.11.2.0", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("9", "280", "10.11.2.80", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("9", "233", "10.11.2.33", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("10", "329", "10.11.3.29", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("10", "280", "10.11.2.80", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("11", "363", "10.11.3.63", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("11", "329", "10.11.3.29", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("12", "380", "10.11.3.80", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("12", "363", "10.11.3.63", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("13", "400", "10.11.4.0", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("13", "380", "10.11.3.80", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("14", "431", "10.11.4.31", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("14", "400", "10.11.4.0", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("15", "461", "10.11.4.61", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("15", "431", "10.11.4.31", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("16", "490", "10.11.4.90", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("16", "461", "10.11.4.61", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("17", "506", "10.11.5.6", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("17", "490", "10.11.4.90", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("18", "539", "10.11.5.39", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("18", "506", "10.11.5.6", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("19", "564", "10.11.5.64", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("19", "539", "10.11.5.39", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("20", "600", "10.11.6.0", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("20", "564", "10.11.5.64", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("21", "634", "10.11.6.34", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("21", "600", "10.11.6.0", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
-            scanData = new ScanData("22", "671", "10.11.6.71", statusResult.UnChecked.ToString(), "-1");
+            scanData = new ScanData("22", "634", "10.11.6.34", statusResult.UnChecked.ToString(), "-1");
+            dataList.Add(scanData);
+            scanData = new ScanData("23", "671", "10.11.6.71", statusResult.UnChecked.ToString(), "-1");
             dataList.Add(scanData);
 
 
@@ -203,14 +206,28 @@ namespace NetworkComRoomTest
 
             try
             {
-                int timeout = 4000;
+                int timeout = 1000;
                 Ping ping;
 
                 foreach (ScanData item in dataList)
                 {
                     ping = new Ping();
-
                     PingReply pingReply = ping.Send(item.IPAddress, timeout);
+
+                    for (int i = 0; i < 4; i++)
+                    {                       
+
+                        pingReply = ping.Send(item.IPAddress, timeout);
+
+                        if (pingReply.Status == IPStatus.Success)
+                        {
+                            // connection was found exit
+                            break;
+                        }
+
+                        pingReply = ping.Send(item.IPAddress, timeout);
+                    }
+
 
                     SuspendLayout();
                     SetStatus(item, pingReply);
