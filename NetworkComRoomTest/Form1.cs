@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -21,6 +22,8 @@ namespace NetworkComRoomTest
 
     public partial class Form1 : Form
     {
+        private const string filePath = @".\Data.csv";
+        private int idCounter = 0;
         private List<ScanData> dataList = new List<ScanData>();
         private ScanData scanData;
 
@@ -63,71 +66,233 @@ namespace NetworkComRoomTest
                 column.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
             }
 
+            // make virtical scroll bar visible at all times even when you cant scroll
+            // dataGridView.Controls[0].Enabled = false; // horizontal scrollbar
+            // dataGridView.Controls[1].Enabled = true; // vertical scrollbar
+            //dataGridView.Controls[VerticalScroll.Value].Enabled = true;
+            
+            
+
             txtBoxRefreshtime.Text = "60";
 
 
-            // hardcoded list as they will not change for the building
+            // hardcoded list                 *** this will change to a File for easy user expansion for the future ***
             #region AddRoomsToList
 
 
-            // build ip list (HARD CODED FOR NOW) as the follow order: ID, ROOM #, IP Address, Status, Ping Response
-            scanData = new ScanData("1", "P107", "10.11.0.7", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("2", "P110", "10.11.0.10", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("3", "P134", "10.11.0.34", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("4", "P155", "10.11.0.55", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("5", "P156", "10.11.0.56", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("6", "120", "10.11.1.20", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("7", "138", "10.11.1.38", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("8", "200", "10.11.2.0", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("9", "233", "10.11.2.33", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("10", "280", "10.11.2.80", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("11", "329", "10.11.3.29", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("12", "363", "10.11.3.63", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("13", "380", "10.11.3.80", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("14", "400", "10.11.4.0", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("15", "431", "10.11.4.31", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("16", "461", "10.11.4.61", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("17", "490", "10.11.4.90", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("18", "506", "10.11.5.6", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("19", "539", "10.11.5.39", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("20", "564", "10.11.5.64", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("21", "600", "10.11.6.0", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("22", "634", "10.11.6.34", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
-            scanData = new ScanData("23", "671", "10.11.6.71", statusResult.UnChecked.ToString(), "-1");
-            dataList.Add(scanData);
+            //// build ip list (HARD CODED FOR NOW) as the follow order: ID, ROOM #, IP Address, Status, Ping Response
+            //scanData = new ScanData("1", "P107", "10.11.0.7", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("2", "P110", "10.11.0.10", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("3", "P134", "10.11.0.34", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("4", "P155", "10.11.0.55", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("5", "P156", "10.11.0.56", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("6", "120", "10.11.1.20", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("7", "138", "10.11.1.38", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("8", "200", "10.11.2.0", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("9", "233", "10.11.2.33", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("10", "280", "10.11.2.80", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("11", "329", "10.11.3.29", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("12", "363", "10.11.3.63", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("13", "380", "10.11.3.80", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("14", "400", "10.11.4.0", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("15", "431", "10.11.4.31", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("16", "461", "10.11.4.61", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("17", "490", "10.11.4.90", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("18", "506", "10.11.5.6", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("19", "539", "10.11.5.39", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("20", "564", "10.11.5.64", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("21", "600", "10.11.6.0", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("22", "634", "10.11.6.34", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
+            //scanData = new ScanData("23", "671", "10.11.6.71", statusResult.UnChecked.ToString(), "-1");
+            //dataList.Add(scanData);
 
 
             #endregion // end AddRoomsToList
 
 
-            
+            #region BackedUpInitialList
+            //P107, 10.11.0.7
+            //P110, 10.11.0.10
+            //P134, 10.11.0.34
+            //P155, 10.11.0.55
+            //P156, 10.11.0.56
+            //120, 10.11.1.20
+            //138, 10.11.1.38
+            //200, 10.11.2.0
+            //233, 10.11.2.33
+            //280, 10.11.2.80
+            //329, 10.11.3.29
+            //363, 10.11.3.63
+            //380, 10.11.3.80
+            //400, 10.11.4.0
+            //431, 10.11.4.31
+            //461, 10.11.4.61
+            //490, 10.11.4.90
+            //506, 10.11.5.6
+            //539, 10.11.5.39
+            //564, 10.11.5.64
+            //600, 10.11.6.0
+            //634, 10.11.6.34
+            //671, 10.11.6.71
+
+            #endregion // BackedUpInitialList
+
+
+
+            #region LoadComRooms
+
+
+            LoadPingList(idCounter);
+
+
+            #endregion // LoadComRooms
+
+
+            //dataGridView.Height = (dataGridView.Rows. * dataGridView.Rows.GetRowsHeight);
+
             foreach (ScanData item in dataList)
             {
                 dataGridView.Rows.Add(item.ID, item.RoomNumber, item.IPAddress, item.Status, item.PingDelay);
             }
 
+        }
+
+
+
+
+        private void LoadPingList(int id)
+        {
+            if (File.Exists(filePath) is false)
+            {
+                try
+                {
+
+                    // create file, if it failes catch will get it.
+                    using (File.Create(filePath)) ;
+
+
+
+                        // add header to file.
+                        // using (FileStream fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write))
+                    using (var writeFile = new StreamWriter(filePath, true))
+                    {
+                        writeFile.WriteLine("# Format like this per Line: Room #, IP Address,");
+                        writeFile.WriteLine("#--------------------------------------------------");
+
+                        writeFile.WriteLine("P107, 10.11.0.7");
+                        writeFile.WriteLine("P110, 10.11.0.10");
+                        writeFile.WriteLine("P134, 10.11.0.34");
+                        writeFile.WriteLine("P155, 10.11.0.55");
+                        writeFile.WriteLine("P156, 10.11.0.56");
+                        writeFile.WriteLine("120, 10.11.1.20");
+                        writeFile.WriteLine("138, 10.11.1.38");
+                        writeFile.WriteLine("200, 10.11.2.0");
+                        writeFile.WriteLine("233, 10.11.2.33");
+                        writeFile.WriteLine("280, 10.11.2.80");
+                        writeFile.WriteLine("329, 10.11.3.29");
+                        writeFile.WriteLine("363, 10.11.3.63");
+                        writeFile.WriteLine("380, 10.11.3.80");
+                        writeFile.WriteLine("400, 10.11.4.0");
+                        writeFile.WriteLine("431, 10.11.4.31");
+                        writeFile.WriteLine("461, 10.11.4.61");
+                        writeFile.WriteLine("490, 10.11.4.90");
+                        writeFile.WriteLine("506, 10.11.5.6");
+                        writeFile.WriteLine("539, 10.11.5.39");
+                        writeFile.WriteLine("564, 10.11.5.64");
+                        writeFile.WriteLine("600, 10.11.6.0");
+                        writeFile.WriteLine("634, 10.11.6.34");
+                        writeFile.WriteLine("671, 10.11.6.71");
+
+                        writeFile.Close();
+                    }
+                        
+                    
+                        
+
+                }
+                catch (IOException e)
+                {
+                    MessageBox.Show("Error file not found, could not create file...\nmaybe you lack permission to do so. check with your admin.\n\nError MSG:\n\n" + e.Message);
+                    Environment.Exit(-1);
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Error creating File, check your premissions and try again. Error MSG: " + e.Message);
+                    Environment.Exit(-1);
+                }
+
+
+            }
+
+            try
+            {
+                using (StreamReader readFile = new StreamReader(filePath))
+                {
+
+
+                    while (!readFile.EndOfStream)
+                    {
+                        string[] token = readFile.ReadLine().Split(',');
+                                                
+                        if (token[0].Contains("#"))
+                        {
+                            continue;
+                        }
+
+
+                        idCounter++;
+
+                        
+
+
+                        // "1", "P107", "10.11.0.7", statusResult.UnChecked.ToString(), "-1"
+                        scanData = new ScanData();
+
+                        scanData.ID = idCounter.ToString();
+                        scanData.RoomNumber = token[0]; // ID
+                        scanData.IPAddress = token[1]; // IP Address
+                        scanData.Status = statusResult.UnChecked.ToString();
+                        scanData.PingDelay = "-1";
+
+
+                        dataList.Add(scanData);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                // failed to load file information to list
+                MessageBox.Show("Error adding file information to Application loader, check formatting and try again.");
+                Environment.Exit(-1);
+            }
+
+
+
+
+
+             //   return true;
         }
 
 
