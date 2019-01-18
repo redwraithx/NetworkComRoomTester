@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
 
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace NetworkComRoomTest
 {
@@ -16,12 +19,14 @@ namespace NetworkComRoomTest
         TimedOut
     }
 
-
-
-
+    public delegate void UpdateControlsDelegate(); // thread delegate
+    
 
     public partial class Form1 : Form
     {
+        public static Form1 instance;
+
+
         private const string filePath = @".\Data.csv";
         private int idCounter = 0;
         private List<ScanData> dataList = new List<ScanData>();
@@ -38,8 +43,37 @@ namespace NetworkComRoomTest
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         DateTime startTime;
 
+
+        // child form window
+        public AlertContactsListForm alertContactsListForm = new AlertContactsListForm();
+        public bool alertContactButton = false;
+        
+        
+
+
         public Form1()
         {
+            
+
+
+            //alertContactsListForm.Parent = this;
+
+            if (instance != null)
+            {
+                return;
+            }
+
+            instance = this;
+
+
+            // this is for the contact list Form 
+            
+            alertContactsListForm.Enabled = false;
+            alertContactsListForm.Visible = false;
+            //alertContactsListForm.TopLevel = true;
+            //alertContactsListForm.TopMost = true;
+            
+
             InitializeComponent();
 
             // enter key to click scanbutton
@@ -160,7 +194,6 @@ namespace NetworkComRoomTest
             #endregion // BackedUpInitialList
 
 
-
             #region LoadComRooms
 
 
@@ -176,10 +209,33 @@ namespace NetworkComRoomTest
             {
                 dataGridView.Rows.Add(item.ID, item.RoomNumber, item.IPAddress, item.Status, item.PingDelay);
             }
-
+            
         }
 
+        // THREADING UPDATER BACKGROUND WORK STARTS
+        public void ThreadBackGroundWorkMethod()
+        {
+            InvokeUpdateControls();
+        }
 
+        //THREAD UPDATER
+        public void InvokeUpdateControls()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new UpdateControlsDelegate(UpdateControls));
+            }
+            else
+            {
+                UpdateControls();
+            }
+        }
+
+        // THREAD UPDATER CONTINUTED
+        private void UpdateControls()
+        {
+            ScanAll();
+        }
 
 
         private void LoadPingList(int id)
@@ -188,66 +244,72 @@ namespace NetworkComRoomTest
             {
                 try
                 {
+                    LogHelper.Log(LogTarget.File, "Creating config file. " + DateTime.Now);
+
 
                     // create file, if it failes catch will get it.
                     using (File.Create(filePath)) ;
-
 
 
                         // add header to file.
                         // using (FileStream fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write))
                     using (var writeFile = new StreamWriter(filePath, true))
                     {
-                        writeFile.WriteLine("# Format like this per Line: Room #, IP Address,");
+                        writeFile.WriteLine("# Format like this per Line (NO SPACES): Room #,IP Address,");
                         writeFile.WriteLine("#--------------------------------------------------");
 
-                        writeFile.WriteLine("P107, 10.11.0.7");
-                        writeFile.WriteLine("P110, 10.11.0.10");
-                        writeFile.WriteLine("P134, 10.11.0.34");
-                        writeFile.WriteLine("P155, 10.11.0.55");
-                        writeFile.WriteLine("P156, 10.11.0.56");
-                        writeFile.WriteLine("120, 10.11.1.20");
-                        writeFile.WriteLine("138, 10.11.1.38");
-                        writeFile.WriteLine("200, 10.11.2.0");
-                        writeFile.WriteLine("233, 10.11.2.33");
-                        writeFile.WriteLine("280, 10.11.2.80");
-                        writeFile.WriteLine("329, 10.11.3.29");
-                        writeFile.WriteLine("363, 10.11.3.63");
-                        writeFile.WriteLine("380, 10.11.3.80");
-                        writeFile.WriteLine("400, 10.11.4.0");
-                        writeFile.WriteLine("431, 10.11.4.31");
-                        writeFile.WriteLine("461, 10.11.4.61");
-                        writeFile.WriteLine("490, 10.11.4.90");
-                        writeFile.WriteLine("506, 10.11.5.6");
-                        writeFile.WriteLine("539, 10.11.5.39");
-                        writeFile.WriteLine("564, 10.11.5.64");
-                        writeFile.WriteLine("600, 10.11.6.0");
-                        writeFile.WriteLine("634, 10.11.6.34");
-                        writeFile.WriteLine("671, 10.11.6.71");
+                        writeFile.WriteLine("P107,10.11.0.7");
+                        writeFile.WriteLine("P110,10.11.0.10");
+                        writeFile.WriteLine("P134,10.11.0.34");
+                        writeFile.WriteLine("P155,10.11.0.55");
+                        writeFile.WriteLine("P156,10.11.0.56");
+                        writeFile.WriteLine("120,10.11.1.20");
+                        writeFile.WriteLine("138,10.11.1.38");
+                        writeFile.WriteLine("200,10.11.2.0");
+                        writeFile.WriteLine("233,10.11.2.33");
+                        writeFile.WriteLine("280,10.11.2.80");
+                        writeFile.WriteLine("329,10.11.3.29");
+                        writeFile.WriteLine("363,10.11.3.63");
+                        writeFile.WriteLine("380,10.11.3.80");
+                        writeFile.WriteLine("400,10.11.4.0");
+                        writeFile.WriteLine("431,10.11.4.31");
+                        writeFile.WriteLine("461,10.11.4.61");
+                        writeFile.WriteLine("490,10.11.4.90");
+                        writeFile.WriteLine("506,10.11.5.6");
+                        writeFile.WriteLine("539,10.11.5.39");
+                        writeFile.WriteLine("564,10.11.5.64");
+                        writeFile.WriteLine("600,10.11.6.0");
+                        writeFile.WriteLine("634,10.11.6.34");
+                        writeFile.WriteLine("671,10.11.6.71");
 
                         writeFile.Close();
-                    }
-                        
-                    
-                        
+
+
+                        LogHelper.Log(LogTarget.File, "Config File Successfully Created. " + DateTime.Now);
+                    }        
 
                 }
                 catch (IOException e)
                 {
                     MessageBox.Show("Error file not found, could not create file...\nmaybe you lack permission to do so. check with your admin.\n\nError MSG:\n\n" + e.Message);
+                    LogHelper.Log(LogTarget.ErrorFile, "IOException Error ==>  Creating Config File");
+
                     Environment.Exit(-1);
                 }
                 catch(Exception e)
                 {
                     MessageBox.Show("Error creating File, check your premissions and try again. Error MSG: " + e.Message);
+                    LogHelper.Log(LogTarget.ErrorFile, "Exception error ==>   Cant Create Config File");
+
                     Environment.Exit(-1);
                 }
-
 
             }
 
             try
             {
+                LogHelper.Log(LogTarget.File, "Loading from Config file. " + DateTime.Now);
+
                 using (StreamReader readFile = new StreamReader(filePath))
                 {
 
@@ -276,15 +338,18 @@ namespace NetworkComRoomTest
                         scanData.Status = statusResult.UnChecked.ToString();
                         scanData.PingDelay = "-1";
 
-
                         dataList.Add(scanData);
                     }
                 }
+
+                LogHelper.Log(LogTarget.File, "Config file successfully loaded. " + DateTime.Now);
             }
             catch(Exception e)
             {
                 // failed to load file information to list
                 MessageBox.Show("Error adding file information to Application loader, check formatting and try again.");
+                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Format Error loading Data from config file to Application. Check \"config file \" Formatting");
+
                 Environment.Exit(-1);
             }
 
@@ -301,12 +366,36 @@ namespace NetworkComRoomTest
 
         private async void AutoPingTimer()
         {
+            bool HeartBeatFailure = false;
+            int HeartBeatFailureCount = 0;
+            lblHeartBeatCounter.Text = HeartBeatFailureCount.ToString();
+
+            
+            txtBoxTimer.Text = "Scanning";
+            txtBoxTimer.Refresh();
+
+
             while (isAutoPingSet == true || chkBoxAutoPing.Checked == true)
             {
+                HeartBeatFailure = AutoScanAll();
+
+                if (HeartBeatFailure == true)
+                {
+                    HeartBeatFailureCount++;
+
+                    lblHeartBeatCounter.Text = HeartBeatFailureCount.ToString();
+
+                    HeartBeatFailure = false;
+                }
+
+
+
+
+
                 int minsTillRefresh = int.Parse(txtBoxRefreshtime.Text);
                 startTime = DateTime.Now;
 
-                Timer timer = new Timer() { Interval = 1000 };
+                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer() { Interval = 1000 };
                 timer.Tick += new EventHandler(T_tick);
 
 
@@ -337,7 +426,34 @@ namespace NetworkComRoomTest
 
                 txtBoxTimer.Text = "Scanning";        
                 
-                ScanAll();
+                HeartBeatFailure = AutoScanAll();
+
+                if (HeartBeatFailure == true)
+                {
+                    HeartBeatFailureCount++;
+
+                    lblHeartBeatCounter.Text = HeartBeatFailureCount.ToString();
+
+                    HeartBeatFailure = false;
+                }
+                else
+                {
+                    // heartbeat counter starts over if we have a good run.
+                    HeartBeatFailureCount = 0;
+                }
+
+
+                if (minsTillRefresh < 100 && HeartBeatFailureCount >=4 || 
+                    minsTillRefresh > 100 && minsTillRefresh < 800 && HeartBeatFailureCount >= 2 || 
+                    minsTillRefresh > 800 && HeartBeatFailureCount >= 1)
+                {
+                    EmailAlertSystem.EMail();
+
+                    // reset heartbeat failure counter and failures
+                    HeartBeatFailureCount = 0;
+                    HeartBeatFailure = false;
+                }
+                
             }
 
             txtBoxTimer.Text = "Timer Off";
@@ -356,33 +472,111 @@ namespace NetworkComRoomTest
         {            
             btnScanAll.Enabled = false;
 
+
+            // Thread scanThread = new Thread(ScanAll);
+            // scanThread.Start();
             ScanAll();
+
 
             btnScanAll.Enabled = true;
         }
 
 
+        private bool AutoScanAll()
+        {
+            bool DeviceFailure = false;
+
+
+            ResetScanObjects();
+
+            try
+            {
+                int timeout = 1000;
+                Ping ping = null;
+                byte[] buffer = new byte[32];
+                PingOptions pingOptions = new PingOptions(128, true);
+
+                foreach (ScanData item in dataList)
+                {
+                    ping = new Ping();
+
+                    PingReply pingReply = ping.Send(item.IPAddress, timeout, buffer, pingOptions);
+                    
+
+                    for (int i = 0; i < 4; i++)
+                    {                        
+                        pingReply = ping.Send(item.IPAddress.ToString(), 1000, buffer, pingOptions);
+
+                        if (pingReply.Status == IPStatus.Success)
+                        {
+                            // connection was found exit
+                            break;
+                        }
+                        else
+                        {
+                            DeviceFailure = true;
+                        }
+
+                        pingReply = null;                     
+                    }
+
+
+                    SuspendLayout();
+                    SetStatus(item, pingReply);
+
+                    ResumeLayout();
+
+                    dataGridView.Refresh();
+
+
+
+                    ping.Dispose();
+                }
+
+                dataGridView.Refresh();
+
+                LogHelper.Log(LogTarget.File, "IP Status hass been updated - " + DateTime.Now);
+            }
+
+            catch (PingException ex)
+            {
+                //MessageBox.Show("Ping Exception Error: " + ex.Message + "\n____________________________________________________\n\n" +                     ex.ToString() + "\n___________________________________________________________________\n\n\n\n" + ex.InnerException +                     "\n\n----------------------------------------\n\nMake sure you dont have any spaces in an IP");
+
+                LogHelper.Log(LogTarget.ErrorFile, "PingException Error ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)");
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show("Exception Error: " + e.Message + "\n___________________________________________________\n\n\n" + e.InnerException);
+
+                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Check config file (for proper ips, with no extra spaces or characters)");
+            }
+
+            return DeviceFailure;
+        } // end of AutoScanAll with return bool (true = connection failed, false = connection successful)
 
 
 
         private void ScanAll()
         {
             ResetScanObjects();
-
+           
             try
             {
-                int timeout = 1000;
-                Ping ping;
+                int timeout = 1000;                
+                Ping ping = null;
+                byte[] buffer = new byte[32];
+                PingOptions pingOptions = new PingOptions(128, true);
 
                 foreach (ScanData item in dataList)
                 {
                     ping = new Ping();
-                    PingReply pingReply = ping.Send(item.IPAddress, timeout);
+
+                    PingReply pingReply = ping.Send(item.IPAddress, timeout, buffer, pingOptions);
 
                     for (int i = 0; i < 4; i++)
-                    {                       
+                    {
 
-                        pingReply = ping.Send(item.IPAddress, timeout);
+                        pingReply = ping.Send(item.IPAddress.ToString(), 1000, buffer, pingOptions);
 
                         if (pingReply.Status == IPStatus.Success)
                         {
@@ -390,7 +584,7 @@ namespace NetworkComRoomTest
                             break;
                         }
 
-                        pingReply = ping.Send(item.IPAddress, timeout);
+                        pingReply = null;
                     }
 
 
@@ -406,10 +600,23 @@ namespace NetworkComRoomTest
                 }
 
                 dataGridView.Refresh();
+
+                LogHelper.Log(LogTarget.File, "IP Status hass been updated - " + DateTime.Now);
             }
+            
             catch (PingException ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                //MessageBox.Show("Ping Exception Error: " + ex.Message + "\n____________________________________________________\n\n" + 
+                //    ex.ToString() + "\n___________________________________________________________________\n\n\n\n" + ex.InnerException + 
+                //    "\n\n----------------------------------------\n\nMake sure you dont have any spaces in an IP");
+
+                LogHelper.Log(LogTarget.ErrorFile, "PingException Error ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)");
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show("Exception Error: " + e.Message + "\n___________________________________________________\n\n\n" + e.InnerException);
+
+                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Check config file (for proper ips, with no extra spaces or characters)");
             }
         }
 
@@ -539,9 +746,19 @@ namespace NetworkComRoomTest
             if (chkBoxAutoPing.Checked == true)
             {
                 isAutoPingSet = true;
+                chkBoxAutoPing.Refresh();
+
+                grpBoxHeartBeats.Enabled = true;
+                grpBoxHeartBeats.Visible = true;
+                grpBoxHeartBeats.Refresh();
+
 
                 btnScanAll.Enabled = false;
+                btnScanAll.Visible = false;
+                btnScanAll.Refresh();
+
                 txtBoxRefreshtime.Enabled = false;
+
 
                 AutoPingTimer();
             }
@@ -549,10 +766,18 @@ namespace NetworkComRoomTest
             {
                 txtBoxTimer.Text = "AutoPing OFF";
 
+                grpBoxHeartBeats.Enabled = false;
+                grpBoxHeartBeats.Visible = false;
+                grpBoxHeartBeats.Refresh();
+
                 btnScanAll.Enabled = true;
+                btnScanAll.Visible = true;
+                btnScanAll.Refresh();
+
                 txtBoxRefreshtime.Enabled = true;
 
                 isAutoPingSet = false;
+                chkBoxAutoPing.Refresh();
             }
         }
 
@@ -581,6 +806,55 @@ namespace NetworkComRoomTest
 
             currentSetTimerValue = int.Parse(txtBoxRefreshtime.Text);
         }
+
+        private void OnApplicationExit(object sender, FormClosingEventArgs e)
+        {
+            LogHelper.Log(LogTarget.File, "Application Exiting - " + DateTime.Now);
+        }
+
+        //private void groupBox3_Enter(object sender, EventArgs e)
+        //{
+
+        //}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            alertContactButton = !alertContactButton; // inverse per click
+
+            switch (alertContactButton)
+            {
+                case true:
+                    {
+                        //int centerX = this.DesktopBounds.Left + (this.Width - alertContactsListForm.Width) / 2;
+                        //int centerY = this.DesktopBounds.Top + (this.Height - alertContactsListForm.Height) / 2;
+                        //alertContactsListForm.SetDesktopLocation(centerX, centerY);
+                        alertContactsListForm.StartPosition = FormStartPosition.Manual;
+                        alertContactsListForm.Location = new Point(this.Location.X + (this.Width - alertContactsListForm.Width) / 2, this.Location.Y + (this.Height - alertContactsListForm.Height) / 2);
+                        //alertContactsListForm.Show(this);
+
+                        this.Enabled = false;
+
+                        alertContactsListForm.Enabled = true;
+                        alertContactsListForm.Visible = true;
+
+                        break;
+                    }
+                case false:
+                    {
+                        
+                        alertContactsListForm.Enabled = false;
+                        alertContactsListForm.Visible = false;
+
+                        this.Enabled = false;
+
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            
+        }
     }
 
 
@@ -599,8 +873,6 @@ namespace NetworkComRoomTest
         {
 
         }
-
-
 
 
 

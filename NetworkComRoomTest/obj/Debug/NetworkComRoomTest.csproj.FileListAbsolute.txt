@@ -17,9 +17,20 @@ C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Debug\
 C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.CoreCompileInputs.cache
 C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.exe
 C:\Users\RedWraith\source\repos\NetworkComRoomTest\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.pdb
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csprojAssemblyReference.cache
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Form1.resources
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Properties.Resources.resources
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.GenerateResource.cache
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.exe
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.pdb
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe.config
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe
+C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.pdb
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe.config
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.pdb
+C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.AlertContactsListForm.resources
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Form1.resources
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Properties.Resources.resources
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.GenerateResource.cache
