@@ -37,3 +37,14 @@ C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\De
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.exe
 C:\Users\User\source\repos\NetworkComRoomTester-master\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.pdb
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.AssemblyReference.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.AlertContactsListForm.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Form1.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.Properties.Resources.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.GenerateResource.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.csproj.CoreCompileInputs.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.exe
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Debug\NetworkComRoomTest.pdb
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe.config
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.exe
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Debug\NetworkComRoomTest.pdb

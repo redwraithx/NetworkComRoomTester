@@ -53,9 +53,6 @@ namespace NetworkComRoomTest
 
         public Form1()
         {
-            
-
-
             //alertContactsListForm.Parent = this;
 
             if (instance != null)
@@ -257,7 +254,8 @@ namespace NetworkComRoomTest
                     {
                         writeFile.WriteLine("# Format like this per Line (NO SPACES): Room #,IP Address,");
                         writeFile.WriteLine("#--------------------------------------------------");
-
+                        
+                        /*
                         writeFile.WriteLine("P107,10.11.0.7");
                         writeFile.WriteLine("P110,10.11.0.10");
                         writeFile.WriteLine("P134,10.11.0.34");
@@ -281,6 +279,7 @@ namespace NetworkComRoomTest
                         writeFile.WriteLine("600,10.11.6.0");
                         writeFile.WriteLine("634,10.11.6.34");
                         writeFile.WriteLine("671,10.11.6.71");
+                        */
 
                         writeFile.Close();
 
@@ -558,7 +557,11 @@ namespace NetworkComRoomTest
 
         private void ScanAll()
         {
+            if (dataList.Count == 0)
+                return;
+
             ResetScanObjects();
+
            
             try
             {
@@ -705,6 +708,10 @@ namespace NetworkComRoomTest
 
         private void ResetScanObjects()
         {
+            if (dataList.Count == 0)
+                return;
+
+
             int currentCell = -1;
 
             foreach (ScanData item in dataList)

@@ -27,3 +27,14 @@ C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest
 C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Release\NetworkComRoomTest.exe
 C:\Users\User\source\repos\NetworkComRoomTester-master - Copy\NetworkComRoomTest\obj\Release\NetworkComRoomTest.pdb
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Release\NetworkComRoomTest.exe.config
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Release\NetworkComRoomTest.exe
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\bin\Release\NetworkComRoomTest.pdb
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.AssemblyReference.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.AlertContactsListForm.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.Form1.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.Properties.Resources.resources
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.GenerateResource.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.csproj.CoreCompileInputs.cache
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.exe
+C:\Users\RedWraith\Documents\NetworkComRoomTester\NetworkComRoomTest\obj\Release\NetworkComRoomTest.pdb

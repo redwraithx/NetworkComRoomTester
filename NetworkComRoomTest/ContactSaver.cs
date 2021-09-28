@@ -23,13 +23,29 @@ namespace NetworkComRoomTest
     public class SaveFile : ContactFS
     {
         public string filePath = @".\Contacts.csv";
+
+        
+
+
         public override void ContactInfo(List<ContactInfo> contactData)
         {
-            using (StreamWriter streamWriter = new StreamWriter(filePath, false))
+            // delete file if it exists
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            LogHelper.Log(LogTarget.File, $"Saving contacts, displaying all contacts");
+
+            foreach (ContactInfo data in contactData)
+            {
+                LogHelper.Log(LogTarget.File, $"Index: {data.ID}, FullName: {data.FullName}, Email: {data.Email} ");
+            }
+
+            using (StreamWriter streamWriter = new StreamWriter(filePath))
             {
                 foreach (ContactInfo contact in contactData)
                 {
-                    streamWriter.WriteLine(contact.ID.ToString(), contact.FullName, contact.Email);
+                    LogHelper.Log(LogTarget.File, $"Saving this data: {contact.ID.ToString()},{contact.FullName},{contact.Email}");
+                    streamWriter.WriteLine($"{contact.ID.ToString()},{contact.FullName},{contact.Email}");
                 }
 
                 streamWriter.Close();
@@ -42,25 +58,35 @@ namespace NetworkComRoomTest
         public string filePath = @".\Contacts.csv";
         public override void ContactInfo(List<ContactInfo> contactData)
         {
-            using (StreamReader streamReader = new StreamReader(filePath))
+            if (File.Exists(filePath))
             {
-                while(!streamReader.EndOfStream)
+                LogHelper.Log(LogTarget.File, $"Loading Contacts data");
+
+                using (StreamReader streamReader = new StreamReader(filePath))
                 {
-                    string line = streamReader.ReadLine();
-
-                    string[] token = line.Split(',');
-
-                    ContactInfo newContact = new ContactInfo
+                    while (!streamReader.EndOfStream)
                     {
-                        ID = int.Parse(token[0]),
-                        FullName = token[1],
-                        Email = token[2]
-                    };
+                        string line = streamReader.ReadLine();
 
-                    contactData.Add(newContact);
+                        string[] token = line.Split(',');
+
+                        ContactInfo newContact = new ContactInfo()
+                        {
+                            ID = int.Parse(token[0]),
+                            FullName = token[1],
+                            Email = token[2]
+                        };
+
+                        LogHelper.Log(LogTarget.File, $"new Contact - ID: {newContact.ID}, Name: {newContact.FullName}, Email: {newContact.Email}");
+
+
+                        contactData.Add(newContact);
+                    }
+
+                    streamReader.Close();
                 }
 
-                streamReader.Close();
+                LogHelper.Log(LogTarget.File, $"Contacts data Loaded Successfully");
             }
         }
     }
@@ -107,5 +133,16 @@ namespace NetworkComRoomTest
         public int ID { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
+
+        public ContactInfo(int id, string name, string email)
+        {
+            ID = id;
+            FullName = name;
+            Email = email;
+        }
+        public ContactInfo()
+        {
+
+        }
     }
 }

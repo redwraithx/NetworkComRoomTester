@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.grpBoxHeartBeats = new System.Windows.Forms.GroupBox();
             this.lblHeartBeatCounter = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,7 +50,6 @@
             this.columnIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PingTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.grpBoxHeartBeats.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -71,6 +71,17 @@
             this.groupBox1.Size = new System.Drawing.Size(375, 610);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(9, 578);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(82, 28);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Edit Contacts";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // grpBoxHeartBeats
             // 
@@ -279,16 +290,6 @@
             this.PingTime.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.PingTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             this.PingTime.Width = 75;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(9, 581);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
