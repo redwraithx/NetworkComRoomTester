@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.grpBoxHeartBeats = new System.Windows.Forms.GroupBox();
@@ -50,6 +50,7 @@
             this.columnIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PingTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBoxDebugLogging = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.grpBoxHeartBeats.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -59,6 +60,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.groupBox1.Controls.Add(this.checkBoxDebugLogging);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.grpBoxHeartBeats);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -68,16 +70,16 @@
             this.groupBox1.Controls.Add(this.dataGridView);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(375, 610);
+            this.groupBox1.Size = new System.Drawing.Size(375, 636);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(9, 578);
+            this.button1.Location = new System.Drawing.Point(25, 578);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(82, 28);
+            this.button1.Size = new System.Drawing.Size(77, 48);
             this.button1.TabIndex = 6;
             this.button1.Text = "Edit Contacts";
             this.button1.UseVisualStyleBackColor = true;
@@ -89,9 +91,9 @@
             this.grpBoxHeartBeats.Controls.Add(this.lblHeartBeatCounter);
             this.grpBoxHeartBeats.Controls.Add(this.label3);
             this.grpBoxHeartBeats.Enabled = false;
-            this.grpBoxHeartBeats.Location = new System.Drawing.Point(97, 573);
+            this.grpBoxHeartBeats.Location = new System.Drawing.Point(141, 573);
             this.grpBoxHeartBeats.Name = "grpBoxHeartBeats";
-            this.grpBoxHeartBeats.Size = new System.Drawing.Size(180, 33);
+            this.grpBoxHeartBeats.Size = new System.Drawing.Size(208, 33);
             this.grpBoxHeartBeats.TabIndex = 5;
             this.grpBoxHeartBeats.TabStop = false;
             this.grpBoxHeartBeats.Visible = false;
@@ -100,7 +102,7 @@
             // 
             this.lblHeartBeatCounter.AutoSize = true;
             this.lblHeartBeatCounter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHeartBeatCounter.Location = new System.Drawing.Point(154, 11);
+            this.lblHeartBeatCounter.Location = new System.Drawing.Point(169, 11);
             this.lblHeartBeatCounter.Name = "lblHeartBeatCounter";
             this.lblHeartBeatCounter.Size = new System.Drawing.Size(16, 16);
             this.lblHeartBeatCounter.TabIndex = 1;
@@ -110,7 +112,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(8, 11);
+            this.label3.Location = new System.Drawing.Point(23, 11);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(142, 16);
             this.label3.TabIndex = 0;
@@ -175,16 +177,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(324, 588);
+            this.label2.Location = new System.Drawing.Point(300, 613);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Brian P.";
+            this.label2.Text = "Brian Purdy";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(305, 583);
+            this.label1.Location = new System.Drawing.Point(282, 613);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(22, 13);
             this.label1.TabIndex = 2;
@@ -208,17 +210,17 @@
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AllowUserToResizeColumns = false;
             this.dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView.BackgroundColor = System.Drawing.Color.Silver;
             this.dataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnID,
@@ -226,14 +228,14 @@
             this.columnIP,
             this.columnStatus,
             this.PingTime});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.MultiSelect = false;
@@ -291,12 +293,23 @@
             this.PingTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             this.PingTime.Width = 75;
             // 
+            // checkBoxDebugLogging
+            // 
+            this.checkBoxDebugLogging.AutoSize = true;
+            this.checkBoxDebugLogging.Location = new System.Drawing.Point(131, 612);
+            this.checkBoxDebugLogging.Name = "checkBoxDebugLogging";
+            this.checkBoxDebugLogging.Size = new System.Drawing.Size(129, 17);
+            this.checkBoxDebugLogging.TabIndex = 7;
+            this.checkBoxDebugLogging.Text = "Enable debug logging";
+            this.checkBoxDebugLogging.UseVisualStyleBackColor = true;
+            this.checkBoxDebugLogging.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.ClientSize = new System.Drawing.Size(399, 631);
+            this.ClientSize = new System.Drawing.Size(399, 660);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -336,6 +349,7 @@
         private System.Windows.Forms.Label lblHeartBeatCounter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBoxDebugLogging;
     }
 }
 

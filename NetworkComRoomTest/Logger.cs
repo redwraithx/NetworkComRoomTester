@@ -49,22 +49,29 @@ namespace NetworkComRoomTest
     public static class LogHelper
     {
         private static Logger logger = null;
+
+        internal static bool canLogDebugLogging = false;
+
         public static void Log(LogTarget target, string message)
         {
             switch (target)
             {
                 case LogTarget.File:
                     {
-                        logger = new FileLogger();
-                        logger.Log(message);
+                        if (canLogDebugLogging)
+                        {
+                            logger = new FileLogger();
+                            logger.Log(message);
+                        }
 
                         break;
                     }
                 case LogTarget.ErrorFile:
                     {
-                        logger = new ErrorLogger();
-                        logger.Log(message);
-
+                        
+                            logger = new ErrorLogger();
+                            logger.Log(message);
+                        
                         break;
                     }
                 default:

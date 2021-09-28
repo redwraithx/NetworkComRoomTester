@@ -862,6 +862,13 @@ namespace NetworkComRoomTest
 
             
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            LogHelper.canLogDebugLogging = checkBoxDebugLogging.Checked;
+
+            LogHelper.Log(LogTarget.File, $"Logging Debugging is {LogHelper.canLogDebugLogging}");
+        }
     }
 
 
