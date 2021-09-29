@@ -206,7 +206,9 @@ namespace NetworkComRoomTest
             {
                 dataGridView.Rows.Add(item.ID, item.RoomNumber, item.IPAddress, item.Status, item.PingDelay);
             }
-            
+
+            LineReader(filePath, 4);
+
         }
 
         // THREADING UPDATER BACKGROUND WORK STARTS
@@ -252,7 +254,10 @@ namespace NetworkComRoomTest
                         // using (FileStream fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write))
                     using (var writeFile = new StreamWriter(filePath, true))
                     {
-                        writeFile.WriteLine("# Format like this per Line (NO SPACES): Room #,IP Address,");
+                        writeFile.WriteLine("# Format like this per Line (NO SPACES or EMPTY LINES): Room #,IP Address,");
+                        writeFile.WriteLine("#--------------------------------------------------");
+                        writeFile.WriteLine("# This will load the default state of the debug logging: 0 = true, Default is 1 = false");
+                        writeFile.WriteLine("@,1");
                         writeFile.WriteLine("#--------------------------------------------------");
                         
                         /*
@@ -290,37 +295,54 @@ namespace NetworkComRoomTest
                 }
                 catch (IOException e)
                 {
-                    MessageBox.Show("Error file not found, could not create file...\nmaybe you lack permission to do so. check with your admin.\n\nError MSG:\n\n" + e.Message);
-                    LogHelper.Log(LogTarget.ErrorFile, "IOException Error ==>  Creating Config File");
+                    
+                    MessageBox.Show($"{GetErrorMessage("WritingFile - IOException Error ==> Creating Config File")}, could not create file...\nmaybe you lack permission to do so. check with your admin.\n\nError MSG:\n\n" + e.Message);
+                    //LogHelper.Log(LogTarget.ErrorFile, "IOException Error ==>  Creating Config File");
+                    LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("WritingFile - IOException Error ==>  Creating Config File"));
 
                     Environment.Exit(-1);
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show("Error creating File, check your premissions and try again. Error MSG: " + e.Message);
-                    LogHelper.Log(LogTarget.ErrorFile, "Exception error ==>   Cant Create Config File");
+                    MessageBox.Show($"{GetErrorMessage("Exception error ==> Cant Create Config File")}, check your premissions and try again. Error MSG: " + e.Message);
+                    LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("Exception error ==>  Cant Create Config File"));
 
                     Environment.Exit(-1);
                 }
 
             }
 
+            int linesCounter = 0;
+
             try
             {
                 LogHelper.Log(LogTarget.File, "Loading from Config file. " + DateTime.Now);
-
+                
                 using (StreamReader readFile = new StreamReader(filePath))
                 {
 
+                    
 
                     while (!readFile.EndOfStream)
                     {
                         string[] token = readFile.ReadLine().Split(',');
                                                 
-                        if (token[0].Contains("#"))
+                        if (token[0].Contains("#") || token[0].Contains("@"))
                         {
+                            linesCounter++;
+
                             continue;
                         }
+                        //else if(currentReadLine == debugStateLine - 1)
+                        //{
+                        //    // update debug log state
+                        //    if (token[0].Contains("0"))
+                        //        this.checkBoxDebugLogging.Checked = true;
+                        //    else
+                        //        this.checkBoxDebugLogging.Checked = false;
+
+                        //    continue;
+                        //}
 
 
                         idCounter++;
@@ -338,6 +360,8 @@ namespace NetworkComRoomTest
                         scanData.PingDelay = "-1";
 
                         dataList.Add(scanData);
+
+                        linesCounter++;
                     }
                 }
 
@@ -346,8 +370,8 @@ namespace NetworkComRoomTest
             catch(Exception e)
             {
                 // failed to load file information to list
-                MessageBox.Show("Error adding file information to Application loader, check formatting and try again.");
-                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Format Error loading Data from config file to Application. Check \"config file \" Formatting");
+                MessageBox.Show( GetErrorMessage($"Lines Counted = {linesCounter}, Error adding file information to Application loader, check formatting and try again.") );
+                LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage($"Lines Counted = {linesCounter}, Exception Error ==> Format Error loading Data from config file to Application. Check \"config file \" Formatting"));
 
                 Environment.Exit(-1);
             }
@@ -504,7 +528,7 @@ namespace NetworkComRoomTest
 
                     for (int i = 0; i < 4; i++)
                     {                        
-                        pingReply = ping.Send(item.IPAddress.ToString(), 1000, buffer, pingOptions);
+                        pingReply = ping.Send(item.IPAddress.ToString(), 500, buffer, pingOptions);
 
                         if (pingReply.Status == IPStatus.Success)
                         {
@@ -541,13 +565,13 @@ namespace NetworkComRoomTest
             {
                 //MessageBox.Show("Ping Exception Error: " + ex.Message + "\n____________________________________________________\n\n" +                     ex.ToString() + "\n___________________________________________________________________\n\n\n\n" + ex.InnerException +                     "\n\n----------------------------------------\n\nMake sure you dont have any spaces in an IP");
 
-                LogHelper.Log(LogTarget.ErrorFile, "PingException Error ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)");
+                LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("PingException Error line(555) ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)") );
             }
             catch (Exception e)
             {
                 //MessageBox.Show("Exception Error: " + e.Message + "\n___________________________________________________\n\n\n" + e.InnerException);
 
-                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Check config file (for proper ips, with no extra spaces or characters)");
+                LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("Exception Error line(561) ==>  Check config file (for proper ips, with no extra spaces or characters)") );
             }
 
             return DeviceFailure;
@@ -579,7 +603,7 @@ namespace NetworkComRoomTest
                     for (int i = 0; i < 4; i++)
                     {
 
-                        pingReply = ping.Send(item.IPAddress.ToString(), 1000, buffer, pingOptions);
+                        pingReply = ping.Send(item.IPAddress.ToString(), 300, buffer, pingOptions);
 
                         if (pingReply.Status == IPStatus.Success)
                         {
@@ -613,13 +637,13 @@ namespace NetworkComRoomTest
                 //    ex.ToString() + "\n___________________________________________________________________\n\n\n\n" + ex.InnerException + 
                 //    "\n\n----------------------------------------\n\nMake sure you dont have any spaces in an IP");
 
-                LogHelper.Log(LogTarget.ErrorFile, "PingException Error ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)");
+                LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("PingException Error line(627) ==>  Make sure the config file has the correct information - (remove any spaces or characters from IPs)") );
             }
             catch (Exception e)
             {
                 //MessageBox.Show("Exception Error: " + e.Message + "\n___________________________________________________\n\n\n" + e.InnerException);
 
-                LogHelper.Log(LogTarget.ErrorFile, "Exception Error ==>  Check config file (for proper ips, with no extra spaces or characters)");
+                LogHelper.Log(LogTarget.ErrorFile, GetErrorMessage("Exception Error line(633) ==>  Check config file (for proper ips, with no extra spaces or characters)") );
             }
         }
 
@@ -629,13 +653,13 @@ namespace NetworkComRoomTest
 
         private void SetPingResponse(ScanData item, PingReply pingReply)//, Ping ping)
         {
-            if (pingReply.Status == IPStatus.Success)
+            if (pingReply != null && pingReply.Status == IPStatus.Success)
             {
                 currentCell = int.Parse(item.ID);
                 item.PingDelay = Convert.ToString(pingReply.RoundtripTime);
 
                 dataGridView.CurrentCell = dataGridView.Rows[currentCell - 1].Cells[dataGridView.ColumnCount - 1];
-
+                
                 DataGridViewCell cell = dataGridView.Rows[currentCell - 1].Cells[4];
                 cell.Value = item.PingDelay;                
             }
@@ -653,9 +677,10 @@ namespace NetworkComRoomTest
 
 
         private void SetStatus(ScanData item, PingReply pingReply)
-        {          
+        {
+            
 
-            if (pingReply.Status == IPStatus.Success)
+            if (pingReply != null && pingReply.Status == IPStatus.Success)
             {
                 currentCell = int.Parse(item.ID);
 
@@ -670,7 +695,7 @@ namespace NetworkComRoomTest
 
                 SetPingResponse(item, pingReply);
             }
-            else if (pingReply.Status == IPStatus.TimedOut) // offline
+            else if (pingReply == null || pingReply.Status == IPStatus.TimedOut) // offline
             {
                 currentCell = int.Parse(item.ID);
                 
@@ -794,19 +819,31 @@ namespace NetworkComRoomTest
 
         private void txtBoxRefreshtime_TextChanged(object sender, EventArgs e)
         {
-            if (txtBoxRefreshtime.Text == "")
-            {
-                isAutoPingSet = false;
+            //if (string.IsNullOrEmpty(txtBoxRefreshtime.Text) || txtBoxRefreshtime.Text == "")
+            //{
+            //    isAutoPingSet = false;
 
-                return;
-            }
+            //    txtBoxRefreshtime.Text = "60";
+            //    chkBoxAutoPing.Checked = false;
+
+            //    return;
+            //}
 
             int parsedValue;
             if (!int.TryParse(txtBoxRefreshtime.Text, out parsedValue))
             {
                 MessageBox.Show(this, "Enter a Value number 1 to 720");
 
-                txtBoxRefreshtime.Text = "";
+                txtBoxRefreshtime.Text = "60";
+
+                return;
+            }
+
+            if(parsedValue < 1 || parsedValue > 720)
+            {
+                MessageBox.Show(this, "Enter a Value number 1 to 720");
+
+                txtBoxRefreshtime.Text = "60";
 
                 return;
             }
@@ -867,8 +904,44 @@ namespace NetworkComRoomTest
         {
             LogHelper.canLogDebugLogging = checkBoxDebugLogging.Checked;
 
-            LogHelper.Log(LogTarget.File, $"Logging Debugging is {LogHelper.canLogDebugLogging}");
+            LogHelper.Log(LogTarget.File, $"Logging Debugging is {LogHelper.canLogDebugLogging}", true);
+            
+
+            // update saved data for line 3 which will be line2 when loaded
+            LineChanger((LogHelper.canLogDebugLogging == true ? "@,0" : "@,1"), filePath, 4);
         }
+
+        private static void LineChanger(string newLineText, string fileNameToOpen, int lineToEdit)
+        {
+            string[] fileAsArrayOfLines = File.ReadAllLines(fileNameToOpen);
+            fileAsArrayOfLines[lineToEdit - 1] = newLineText;
+            File.WriteAllLines(fileNameToOpen, fileAsArrayOfLines);
+        }
+
+        private void LineReader(string fileNameToOpen, int lineToRead)
+        {
+            string[] fileAsArrayOfLines = File.ReadAllLines(fileNameToOpen);
+
+            string[] token = fileAsArrayOfLines[lineToRead - 1].Split(',');
+
+            if (token[0].Contains("@"))
+            {
+                // update debug log state
+                if (token[1].Contains("0"))
+                    checkBoxDebugLogging.Checked = true;
+                else
+                    checkBoxDebugLogging.Checked = false;
+            }
+
+
+        }
+
+
+
+        private static string GetErrorMessage(string message, 
+                                              [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0, 
+                                              [System.Runtime.CompilerServices.CallerMemberName] string caller = null)
+        => $"Error on line: {lineNumber} <> From method: {caller} <> Message: {message}";
     }
 
 

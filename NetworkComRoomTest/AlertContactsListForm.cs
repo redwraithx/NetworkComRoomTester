@@ -15,9 +15,9 @@ namespace NetworkComRoomTest
         private bool SetFullName = false;
         private bool SetEmailAddress = false;
 
+        private bool editingExistinguser = false;
         private int selectedID = -1;
         private bool loadingContactsFile = false;
-        private bool savingContactsFile = false;
 
         List<ContactInfo> contactData = new List<ContactInfo>();
 
@@ -35,6 +35,7 @@ namespace NetworkComRoomTest
         {
             ClearAddEditFields();
 
+            UpdateDataGridViewsIndexes();
             UpdateContactInfoList();
 
             // save contacts to file
@@ -166,17 +167,17 @@ namespace NetworkComRoomTest
             // saves the new or edited item to a list. then saves thelist to a ContactsList.CSV
             // then updates the datagridView list to reflect the new list.
 
-            AddNewUser();
+            AddNewOrEditUser();
 
 
 
 
         }
 
-        private void AddNewUser()
+        private void AddNewOrEditUser()
         {
             // check if user exists already
-            if (!NewOrExistingUser())
+            if (!editingExistinguser)
             {
                 int newID = GetNextNewUserIndex();
 
@@ -186,13 +187,32 @@ namespace NetworkComRoomTest
             }
             else
             {
-                dataGridView1.Rows[selectedID].Cells[1].Value = txtBoxFullName.Text;
-                dataGridView1.Rows[selectedID].Cells[2].Value = txtBoxEmail.Text;
+                LogHelper.Log(LogTarget.File, $"editing existing user, selectedID: {selectedID}");
+
+                //dataGridView1.Rows.Insert(selectedID, )
+                DataGridViewRow editingRow = (DataGridViewRow)dataGridView1.Rows[selectedID];
+
+                editingRow.ReadOnly = false;
+
+                editingRow.Cells[0].Value = selectedID;
+                editingRow.Cells[1].Value = txtBoxFullName.Text;
+                editingRow.Cells[2].Value = txtBoxEmail.Text;
+
+                editingRow.ReadOnly = true;
+
+
+                dataGridView1.Rows[selectedID].ReadOnly = false;
+                dataGridView1.Rows[selectedID].SetValues(editingRow);
+                dataGridView1.Rows[selectedID].ReadOnly = true;
+
+
+                editingExistinguser = false;
 
                 ClearAddEditFields();
                 selectedID = -1;
             }
 
+            UpdateDataGridViewsIndexes();
         }
 
         private bool NewOrExistingUser()
@@ -204,6 +224,8 @@ namespace NetworkComRoomTest
                     // does the current user's email exsit in the datagrid already?
                     if (user.Cells[2].Value.ToString().Contains(txtBoxEmail.Text))
                     {
+                        editingExistinguser = true;
+
                         user.Cells[1].Value = txtBoxFullName.Text;
                         user.Cells[2].Value = txtBoxEmail.Text;
 
@@ -215,32 +237,20 @@ namespace NetworkComRoomTest
             return false;
         }
 
-        private void RemoveSelectedContact()
-        {
-            if (dataGridView1.Rows.Count == 0)
-                return;
-
-            // check if we have a selected contact
-            
-
-            // get index of the selected object and remove it
-          //  int selectedID = dataGridView1.SelectedRows[dataGridView1.SelectionChanged]
-
-
-            // adjust all remaining indexes to be index -= 1 or reindex the entier list.
-
-        }
-
+        
         private void EditSelectedUser(int selectedID)
         {
 
             // with the selected row info like ID find this user and load that info into the 
             if (dataGridView1.Rows.Count > 0)
             {
+
                 foreach (DataGridViewRow user in dataGridView1.Rows)
                 {
                     if (Convert.ToInt32(user.Cells[0].Value) == selectedID)
                     {
+                        editingExistinguser = true;
+
                         selectedID = Convert.ToInt32(user.Cells[0].Value);
                         txtBoxFullName.Text = user.Cells[1].Value.ToString();
                         txtBoxEmail.Text = user.Cells[2].Value.ToString();
@@ -313,22 +323,33 @@ namespace NetworkComRoomTest
             contactData.Clear();
 
 
-            foreach(DataGridViewRow user in dataGridView1.Rows)
+            UpdateDataGridViewsIndexes();
+
+
+
+            foreach (DataGridViewRow user in dataGridView1.Rows)
             {
                 if (user.Cells[0].Value == null)
                     continue;
 
+                user.Selected = true;
 
-                int id = Convert.ToInt32(user.Cells[0].Value);
+
+                int id = dataGridView1.CurrentCell.RowIndex;
                 string name = user.Cells[1].Value.ToString();
                 string email = user.Cells[2].Value.ToString();
 
                 ContactInfo newContact = new ContactInfo(id, name, email);
 
-//LogHelper.Log(LogTarget.File, $"Index: {id}, FullName: {name}, Email: {email} ");
+                LogHelper.Log(LogTarget.File, $"Index: {id}, FullName: {name}, Email: {email} ");
 
                 contactData.Add(newContact);
+
+                
             }
+
+            UpdateDataGridViewsIndexes();
+            dataGridView1.Refresh();
         }
 
         private void AlertContactsListForm_Load(object sender, EventArgs e)
@@ -350,10 +371,15 @@ namespace NetworkComRoomTest
 
                 LogHelper.Log(LogTarget.File, $"index count of dataGridView AFTER: {dataGridView1.Rows.Count}");
 
+                int counter = 0;
+
                 foreach (ContactInfo user in contactData)
                 {
+                    user.ID = counter;
+
                     dataGridView1.Rows.Add(user.ID, user.FullName, user.Email);
-                    
+
+                    counter++;
                 }
 
                 dataGridView1.Refresh();

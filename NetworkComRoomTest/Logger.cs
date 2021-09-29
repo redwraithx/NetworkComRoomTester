@@ -52,13 +52,13 @@ namespace NetworkComRoomTest
 
         internal static bool canLogDebugLogging = false;
 
-        public static void Log(LogTarget target, string message)
+        public static void Log(LogTarget target, string message, bool logThisMsgAnyway = false)
         {
             switch (target)
             {
                 case LogTarget.File:
                     {
-                        if (canLogDebugLogging)
+                        if (logThisMsgAnyway || canLogDebugLogging)
                         {
                             logger = new FileLogger();
                             logger.Log(message);

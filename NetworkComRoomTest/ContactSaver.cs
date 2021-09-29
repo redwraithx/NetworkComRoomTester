@@ -45,7 +45,8 @@ namespace NetworkComRoomTest
                 foreach (ContactInfo contact in contactData)
                 {
                     LogHelper.Log(LogTarget.File, $"Saving this data: {contact.ID.ToString()},{contact.FullName},{contact.Email}");
-                    streamWriter.WriteLine($"{contact.ID.ToString()},{contact.FullName},{contact.Email}");
+                    //streamWriter.WriteLine($"{contact.ID.ToString()},{contact.FullName},{contact.Email}");
+                    streamWriter.WriteLine($"{contact.FullName},{contact.Email}");
                 }
 
                 streamWriter.Close();
@@ -64,23 +65,29 @@ namespace NetworkComRoomTest
 
                 using (StreamReader streamReader = new StreamReader(filePath))
                 {
+
+                    int counter = 0;
+
                     while (!streamReader.EndOfStream)
                     {
                         string line = streamReader.ReadLine();
 
                         string[] token = line.Split(',');
 
+
                         ContactInfo newContact = new ContactInfo()
                         {
-                            ID = int.Parse(token[0]),
-                            FullName = token[1],
-                            Email = token[2]
+                            ID = counter,
+                            FullName = token[0],
+                            Email = token[1]
                         };
 
                         LogHelper.Log(LogTarget.File, $"new Contact - ID: {newContact.ID}, Name: {newContact.FullName}, Email: {newContact.Email}");
 
 
                         contactData.Add(newContact);
+
+                        counter++;
                     }
 
                     streamReader.Close();

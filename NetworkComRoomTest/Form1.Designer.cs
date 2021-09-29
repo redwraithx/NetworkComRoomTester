@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxDebugLogging = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.grpBoxHeartBeats = new System.Windows.Forms.GroupBox();
             this.lblHeartBeatCounter = new System.Windows.Forms.Label();
@@ -50,7 +51,6 @@
             this.columnIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PingTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBoxDebugLogging = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.grpBoxHeartBeats.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -73,6 +73,17 @@
             this.groupBox1.Size = new System.Drawing.Size(375, 636);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // checkBoxDebugLogging
+            // 
+            this.checkBoxDebugLogging.AutoSize = true;
+            this.checkBoxDebugLogging.Location = new System.Drawing.Point(131, 612);
+            this.checkBoxDebugLogging.Name = "checkBoxDebugLogging";
+            this.checkBoxDebugLogging.Size = new System.Drawing.Size(129, 17);
+            this.checkBoxDebugLogging.TabIndex = 7;
+            this.checkBoxDebugLogging.Text = "Enable debug logging";
+            this.checkBoxDebugLogging.UseVisualStyleBackColor = true;
+            this.checkBoxDebugLogging.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // button1
             // 
@@ -134,11 +145,13 @@
             // txtBoxTimer
             // 
             this.txtBoxTimer.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.txtBoxTimer.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtBoxTimer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtBoxTimer.Enabled = false;
             this.txtBoxTimer.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.txtBoxTimer.Location = new System.Drawing.Point(92, 10);
             this.txtBoxTimer.Name = "txtBoxTimer";
             this.txtBoxTimer.ReadOnly = true;
+            this.txtBoxTimer.ShortcutsEnabled = false;
             this.txtBoxTimer.Size = new System.Drawing.Size(103, 20);
             this.txtBoxTimer.TabIndex = 1;
             this.txtBoxTimer.TabStop = false;
@@ -210,17 +223,18 @@
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AllowUserToResizeColumns = false;
             this.dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView.BackgroundColor = System.Drawing.Color.Silver;
+            this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnID,
@@ -228,14 +242,14 @@
             this.columnIP,
             this.columnStatus,
             this.PingTime});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridView.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.MultiSelect = false;
@@ -293,22 +307,11 @@
             this.PingTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
             this.PingTime.Width = 75;
             // 
-            // checkBoxDebugLogging
-            // 
-            this.checkBoxDebugLogging.AutoSize = true;
-            this.checkBoxDebugLogging.Location = new System.Drawing.Point(131, 612);
-            this.checkBoxDebugLogging.Name = "checkBoxDebugLogging";
-            this.checkBoxDebugLogging.Size = new System.Drawing.Size(129, 17);
-            this.checkBoxDebugLogging.TabIndex = 7;
-            this.checkBoxDebugLogging.Text = "Enable debug logging";
-            this.checkBoxDebugLogging.UseVisualStyleBackColor = true;
-            this.checkBoxDebugLogging.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(399, 660);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

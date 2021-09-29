@@ -1,0 +1,14 @@
+Error on line: 371 <> From method: LoadPingList <> Message: Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 371 <> From method: LoadPingList <> Message: Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 373 <> From method: LoadPingList <> Message: Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 368 <> From method: LoadPingList <> Message: Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 370 <> From method: LoadPingList <> Message: Lines Counted = 0, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 373 <> From method: LoadPingList <> Message: Lines Counted = 3, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 373 <> From method: LoadPingList <> Message: Lines Counted = 3, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 374 <> From method: LoadPingList <> Message: Lines Counted = 3, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 646 <> From method: ScanAll <> Message: Exception Error line(633) ==>  Check config file (for proper ips, with no extra spaces or characters)
+Error on line: 574 <> From method: AutoScanAll <> Message: Exception Error line(561) ==>  Check config file (for proper ips, with no extra spaces or characters)
+Error on line: 646 <> From method: ScanAll <> Message: Exception Error line(633) ==>  Check config file (for proper ips, with no extra spaces or characters)
+Error on line: 646 <> From method: ScanAll <> Message: Exception Error line(633) ==>  Check config file (for proper ips, with no extra spaces or characters)
+Error on line: 374 <> From method: LoadPingList <> Message: Lines Counted = 5, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting
+Error on line: 374 <> From method: LoadPingList <> Message: Lines Counted = 5, Exception Error ==> Format Error loading Data from config file to Application. Check "config file " Formatting

@@ -1,6 +1,38 @@
 Logging Debugging is True
-Saving contacts, displaying all contacts
-Index: 0, FullName: bryguy, Email: bry@here.com 
-Index: 1, FullName: sdfsdf, Email: sdfsdd@here.com 
-Saving this data: 0,bryguy,bry@here.com
-Saving this data: 1,sdfsdf,sdfsdd@here.com
+Loading Contacts data
+Contacts data Loaded Successfully
+Save Button Successfully disabled. 9/28/2021 6:39:13 PM
+Save Button Successfully disabled. 9/28/2021 6:39:13 PM
+Save Button Successfully disabled. 9/28/2021 6:39:14 PM
+Save Button Successfully disabled. 9/28/2021 6:39:15 PM
+Save Button Successfully disabled. 9/28/2021 6:39:16 PM
+Save Button Successfully disabled. 9/28/2021 6:39:16 PM
+Save Button Successfully disabled. 9/28/2021 6:39:16 PM
+Save Button Successfully disabled. 9/28/2021 6:39:16 PM
+Save Button Successfully disabled. 9/28/2021 6:39:17 PM
+Save Button Successfully enabled. 9/28/2021 6:39:18 PM
+Save Button Successfully enabled. 9/28/2021 6:39:18 PM
+Save Button Successfully enabled. 9/28/2021 6:39:18 PM
+Save Button Successfully enabled. 9/28/2021 6:39:18 PM
+Save Button Successfully disabled. 9/28/2021 6:39:22 PM
+Save Button Successfully disabled. 9/28/2021 6:39:22 PM
+Save Button Successfully disabled. 9/28/2021 6:39:26 PM
+Save Button Successfully enabled. 9/28/2021 6:39:26 PM
+Save Button Successfully enabled. 9/28/2021 6:39:33 PM
+Save Button Successfully enabled. 9/28/2021 6:39:33 PM
+Save Button Successfully enabled. 9/28/2021 6:39:33 PM
+Save Button Successfully enabled. 9/28/2021 6:39:33 PM
+Save Button Successfully disabled. 9/28/2021 6:39:34 PM
+Save Button Successfully disabled. 9/28/2021 6:39:34 PM
+Application Exiting - 9/28/2021 6:40:03 PM
+Logging Debugging is True
+Save Button Successfully disabled. 9/28/2021 6:52:44 PM
+Save Button Successfully enabled. 9/28/2021 6:52:44 PM
+Save Button Successfully enabled. 9/28/2021 6:52:46 PM
+Save Button Successfully enabled. 9/28/2021 6:52:47 PM
+Save Button Successfully enabled. 9/28/2021 6:52:47 PM
+Save Button Successfully enabled. 9/28/2021 6:52:47 PM
+Save Button Successfully enabled. 9/28/2021 6:52:47 PM
+editing existing user, selectedID: 0
+Save Button Successfully disabled. 9/28/2021 6:52:49 PM
+Save Button Successfully disabled. 9/28/2021 6:52:49 PM
